@@ -41,33 +41,29 @@ Install the plugin using your preferred package manager and pass the adapter int
       "YourUsername/codecompanion-anthropic-vertex.nvim",
     }
   },
-  config = function()
-    require("codecompanion").setup({
-      
-      extensions = {
-        anthropic_vertex = {
-          enabled = true,
-        }
+  opts = {
+    extensions = {
+      anthropic_vertex = {
+        enabled = true,
+      }
+    },
+    adapters = {
+      anthropic_vertex = function()
+        return require("codecompanion._extensions.anthropic_vertex").adapter()
+      end,
+    },
+    interactions = {
+      chat = {
+        adapter = "anthropic_vertex",
       },
-
-      adapters = {
-        anthropic_vertex = require("codecompanion._extensions.anthropic_vertex").adapter,
+      inline = {
+        adapter = "anthropic_vertex",
       },
-
-      interactions = {
-        chat = {
-          adapter = "anthropic_vertex",
-        },
-        inline = {
-          adapter = "anthropic_vertex",
-        },
-        cmd = {
-          adapter = "anthropic_vertex",
-        },
+      cmd = {
+        adapter = "anthropic_vertex",
       },
-      
-    })
-  end,
+    },
+  },
 }
 
 ```
@@ -81,21 +77,21 @@ If you want to enable it, the safest approach is to turn it on specifically for 
 You can do this by converting the adapter string into a table and overriding the `schema` in your `interactions` block:
 
 ```lua
-      interactions = {
-        chat = {
-          adapter = {
-            name = "anthropic_vertex",
-            schema = {
-              extended_thinking = {
-                default = true, -- Enable reasoning tokens for chat sessions
-              },
+    interactions = {
+      chat = {
+        adapter = {
+          name = "anthropic_vertex",
+          schema = {
+            extended_thinking = {
+              default = true, -- Enable reasoning tokens for chat sessions
             },
           },
         },
-        inline = {
-          adapter = "anthropic_vertex", -- Remains false (default) to save money
-        },
       },
+      inline = {
+        adapter = "anthropic_vertex", -- Remains false (default) to save money
+      },
+    },
 
 ```
 
