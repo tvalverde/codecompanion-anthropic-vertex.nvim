@@ -22,11 +22,11 @@ package.loaded["codecompanion.adapters"] = {
         model = {
           default = "claude-haiku-4-5",
           choices = {
-            ["claude-haiku-4-5"] = { opts = { can_reason = false } }
-          }
-        }
+            ["claude-haiku-4-5"] = { opts = { can_reason = false } },
+          },
+        },
       },
-      temp = {}
+      temp = {},
     }
     return vim.tbl_deep_extend("force", mock_base, custom)
   end,
