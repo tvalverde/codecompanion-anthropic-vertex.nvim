@@ -62,4 +62,24 @@ T["Handlers: form_parameters()"]["should force temperature to 1 when thinking is
   expect.equality(new_params.thinking.budget_tokens, 4000)
 end
 
+T["Environment Variables"] = new_set()
+
+T["Environment Variables"]["should correctly format the URL prefix for regional vs global"] = function()
+  local adapter = get_adapter()
+
+  -- Store the original env var to restore later
+  local original_region = vim.env.CLOUD_ML_REGION
+
+  -- Test 1: Standard Regional Endpoint
+  vim.env.CLOUD_ML_REGION = "us-east5"
+  expect.equality(adapter.env.url_prefix(), "us-east5-")
+
+  -- Test 2: Global Load Balancer Endpoint
+  vim.env.CLOUD_ML_REGION = "global"
+  expect.equality(adapter.env.url_prefix(), "")
+
+  -- Restore the environment
+  vim.env.CLOUD_ML_REGION = original_region
+end
+
 return T

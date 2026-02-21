@@ -25,6 +25,11 @@ return function()
         return loc
       end,
 
+      url_prefix = function()
+        local loc = vim.env.CLOUD_ML_REGION
+        return loc == "global" and "" or (loc .. "-")
+      end,
+
       model = function(self)
         return self.schema.model.default
       end,
@@ -36,7 +41,7 @@ return function()
       bearer_token = "cmd:gcloud auth application-default print-access-token 2>/dev/null | tr -d '\n'",
     },
 
-    url = "https://${location}-aiplatform.googleapis.com/v1/projects/${project_id}/locations/${location}/publishers/anthropic/models/${model}:${action}",
+    url = "https://${url_prefix}aiplatform.googleapis.com/v1/projects/${project_id}/locations/${location}/publishers/anthropic/models/${model}:${action}",
 
     headers = {
       ["Content-Type"] = "application/json",
